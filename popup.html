@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Amplifier & Compressor</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Audio Amplifier</h1>
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Inactive</span>
+            </div>
+        </header>
+
+        <!-- Volume Section -->
+        <section class="control-section">
+            <h2>Volume Boost</h2>
+            <div class="control-group">
+                <label for="volumeSlider">Volume: <span id="volumeValue">100%</span></label>
+                <input type="range" id="volumeSlider" min="100" max="500" value="100" step="10" class="slider">
+                <div class="slider-markers">
+                    <span>100%</span>
+                    <span>200%</span>
+                    <span>300%</span>
+                    <span>400%</span>
+                    <span>500%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compression Section -->
+        <section class="control-section">
+            <h2>Audio Compression</h2>
+            <div class="control-group">
+                <label for="enableCompression">
+                    <input type="checkbox" id="enableCompression">
+                    Enable Compression
+                </label>
+            </div>
+            <div class="compression-controls" id="compressionControls">
+                <div class="control-group">
+                    <label for="thresholdSlider">Threshold: <span id="thresholdValue">-24 dB</span></label>
+                    <input type="range" id="thresholdSlider" min="-100" max="0" value="-24" step="1" class="slider">
+                </div>
+                <div class="control-group">
+                    <label for="ratioSlider">Ratio: <span id="ratioValue">4:1</span></label>
+                    <input type="range" id="ratioSlider" min="1" max="20" value="4" step="0.5" class="slider">
+                </div>
+                <div class="control-group">
+                    <label for="attackSlider">Attack: <span id="attackValue">0.05s</span></label>
+                    <input type="range" id="attackSlider" min="0" max="1" value="0.05" step="0.01" class="slider">
+                </div>
+                <div class="control-group">
+                    <label for="releaseSlider">Release: <span id="releaseValue">0.25s</span></label>
+                    <input type="range" id="releaseSlider" min="0" max="1" value="0.25" step="0.01" class="slider">
+                </div>
+            </div>
+        </section>
+
+        <!-- Audio Level Meter -->
+        <section class="control-section">
+            <h2>Audio Levels</h2>
+            <div class="meter-container">
+                <div class="meter">
+                    <div class="meter-bar" id="inputMeter"></div>
+                    <label>Input</label>
+                </div>
+                <div class="meter">
+                    <div class="meter-bar" id="outputMeter"></div>
+                    <label>Output</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reset Button -->
+        <div class="reset-container">
+            <button id="resetButton" class="reset-btn">Reset to Default</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

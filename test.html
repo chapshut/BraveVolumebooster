@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .audio-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        audio, video {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Audio Amplifier & Compressor Test Page</h1>
+        
+        <div class="instructions">
+            <h3>How to test the extension:</h3>
+            <ol>
+                <li>Install the extension in Brave browser</li>
+                <li>Click on any audio/video element below to start playback</li>
+                <li>Open the extension popup to adjust volume and compression settings</li>
+                <li>Notice how the extension amplifies and compresses the audio</li>
+            </ol>
+        </div>
+
+        <div class="audio-section">
+            <h3>🎼 Audio Elements</h3>
+            <audio controls>
+                <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                <source src="https://file-examples.com/storage/fe68c92b7d66f4297a39d1d/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            
+            <audio controls>
+                <source src="https://www.soundjay.com/misc/sounds/fail-buzzer-02.wav" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <div class="audio-section">
+            <h3>📹 Video Elements</h3>
+            <video controls>
+                <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+                Your browser does not support the video element.
+            </video>
+        </div>
+
+        <div class="audio-section">
+            <h3>🧪 Dynamic Audio Test</h3>
+            <button onclick="addAudioElement()">Add New Audio Element</button>
+            <button onclick="playTestTone()">Play Test Tone</button>
+            <div id="dynamicAudio"></div>
+        </div>
+
+        <div class="instructions">
+            <h3>Expected Behavior:</h3>
+            <ul>
+                <li><strong>Volume Boost:</strong> Audio should get louder when you increase the volume slider above 100%</li>
+                <li><strong>Compression:</strong> When enabled, loud sounds should be reduced and quiet sounds boosted</li>
+                <li><strong>Threshold Control:</strong> Lower threshold values make compression more aggressive</li>
+                <li><strong>Real-time Meters:</strong> Input/output level meters should show audio activity</li>
+                <li><strong>Status Indicator:</strong> Extension should show "Active" when audio is detected</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let audioContext;
+        let oscillator;
+
+        function addAudioElement() {
+            const container = document.getElementById('dynamicAudio');
+            const audio = document.createElement('audio');
+            audio.controls = true;
+            audio.src = 'https://www.soundjay.com/misc/sounds/magic-chime-02.wav';
+            container.appendChild(audio);
+            container.appendChild(document.createElement('br'));
+        }
+
+        function playTestTone() {
+            if (audioContext) {
+                stopTestTone();
+            }
+            
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // A note
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            
+            // Stop after 2 seconds
+            setTimeout(stopTestTone, 2000);
+        }
+
+        function stopTestTone() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator = null;
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+        }
+    </script>
+</body>
+</html>
